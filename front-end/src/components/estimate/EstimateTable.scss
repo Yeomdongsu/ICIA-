@@ -1,0 +1,20 @@
+// #etr1, #etr2, #etr3, #etr4, #etr5, #etr6, #etr7, #etr8, #etr9, #etr10, #etr11 {
+//     display:none;
+// }
+label{
+    color:lightgray;
+}
+.slbtn{
+    color:lightGray;
+}
+.slbtn:hover{
+    color:black;
+    cursor: pointer;
+}
+#slabel, #plabel, #hlabel, #wlabel{
+    color:black;
+    cursor: pointer;
+}
+#t1,#t2,#t3,#t4{
+    transition: margin-left 1s;
+}

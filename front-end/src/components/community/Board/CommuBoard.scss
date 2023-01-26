@@ -1,0 +1,73 @@
+.divBoard{
+    text-align: right;
+    width: 1000px;
+    height: 45px;
+    // border: 1px solid rgb(230, 230, 230);
+    border: 1.5px solid gray;
+    font-size: 1rem;
+    line-height: 2.5;
+}
+
+.divbtn{
+    display:flex; 
+    justify-content:space-between;
+}
+
+.inputdiv{
+    width:850px;
+    height:70px; 
+    font-size:1rem;
+    padding-left:10px;
+}
+
+.divdiv{
+    border: 1px solid rgb(230, 230, 230);
+    padding: 5px 15px;
+    box-sizing:border-box;
+}
+
+.inputre{
+    width:970px;
+    height:70px;
+    font-size:1rem;
+    border:0;
+}
+
+
+.inputWrBtn{
+    font-size:18px ;
+    height:90px ;
+    border-top-left-radius:15px;
+    border-bottom-left-radius:15px;
+    border:1px solid #C9A3B6;
+    border-right:none;
+    padding-left:30px;
+    
+}
+
+
+
+.inputTitle{
+    width: 100%;
+    height: 45px;
+    border:none;
+    background-color:#f7ecec
+}
+
+.divBdInfo{
+   width: 100%; 
+   display: flex; 
+   justify-content: space-between; 
+   padding-left: 15px ; 
+   border-left:none; 
+   border-right:none; 
+   border-color:lightgray;
+
+}
+
+.textStr{
+   height: 500px; 
+   border:none; 
+   border-bottom:1px solid lightgray;
+
+}

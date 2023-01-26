@@ -1,0 +1,37 @@
+//변수 선언
+$blue : #228be6;
+$gray : #767e87;
+$pink : #f06595;
+$red : #f74848;
+
+.Spaging {
+    width: 100%;
+    display: inline-flex;
+    justify-content: center;
+    padding: 20px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    .Snumber {
+        display: inline-flex;
+        color: $gray;
+        // border: 1px solid $gray;
+        // border-radius: 4px;
+        cursor: pointer;
+        justify-content: center;
+        height: 1.25rem;
+        width: 1.25rem;
+        margin: 0 7px;
+        font-size: 1.1rem;
+        padding-left: 0;
+        
+        &:hover {
+            // background: $gray;
+            color: black;
+        }
+
+        &.cur {
+            // background: $gray;
+            color: black;
+        }
+    }
+}

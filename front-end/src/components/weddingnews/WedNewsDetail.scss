@@ -1,0 +1,69 @@
+.Winfo{
+    width: 1100px;
+    height: 45px;
+    border-left: 1px solid rgb(230, 230, 230);
+    border-right: 1px solid rgb(230, 230, 230);
+    font-size: 1rem;
+    line-height: 2.5;
+    display:flex;
+    justify-content:space-between; 
+    padding-left:15px;
+    padding-right: 15px;
+}
+
+.WMain {
+    flex: 1;
+    min-height: 250px;
+    width: 100%;
+    margin: auto;
+
+    .WContent {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        padding: 10px;
+        background: white;
+        margin: 1.5rem auto;
+        // border-radius: 5px;
+        // padding-bottom: 2rem;
+        box-sizing: border-box;
+        
+    }
+}
+
+.WInput {
+    width: 100%;
+    height: 2.5rem;
+    font-size: 1.25rem;
+    line-height: 2.5rem;
+    border: none;
+    // border-radius: 1.25rem;
+    background: white;
+    text-align: center;
+    border: 1px solid rgb(230, 230, 230);
+    
+    &::placeholder {
+        color: rgb(85, 84, 84);
+    }
+
+    &+&, &+.Button, .Button+& {
+        margin-top: 1rem;
+    }    
+}
+
+.WTextarea {
+    width: 100%;
+    height: 20rem;
+    font-size: 1.25rem;
+    line-height: 2.5rem;
+    border: none;
+    // border-radius: 1.25rem;
+    // background: rgb(230, 230, 230);
+    background: white;
+    resize: none;
+    margin:auto;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    border: 1px solid rgb(230, 230, 230)
+}

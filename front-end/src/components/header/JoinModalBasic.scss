@@ -1,0 +1,237 @@
+.JoinModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+
+    .JoinContainer {
+        /* 모달창 크기 */
+        width: 700px;
+        height: 750px;
+        text-align: center;
+        overflow: auto;
+        /* 최상단 위치 */
+        z-index: 9999;
+        
+        /* 중앙 배치 */
+        /* top, bottom, left, right 는 브라우저 기준으로 작동한다. */
+        /* translate는 본인의 크기 기준으로 작동한다. */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      
+        /* 모달창 디자인 */
+        background-color: white;
+        border: 1px solid black;
+        border-radius: 8px;
+        color: black;
+        .jhr{
+            margin-bottom: 20px;
+        }
+        // .j-img {
+        //     width: 120px;
+        //     margin: 30px 0 20px;
+        // }
+        .jinput-container, .hidden-box{
+            display:flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        // .hidden-box{
+        //     display:none;
+        // }
+        
+        .user-input {
+            display: flex;
+            flex-direction: column;
+            padding: 0 24px;
+            
+            .jtx{
+                margin: 4% 0;
+            }
+
+            .input-basic {
+                font-size: 17px;
+                width: 350px;
+                height: 55px;
+                padding: 15px 16px;
+                margin-bottom: 20px;
+                border: 1px solid #c4c4c4;
+                border-radius: 5px;
+                box-sizing: border-box;
+            }
+            .mtrno{
+                font-size: 17px;
+                width: 47%;
+                height: 55px;
+                padding: 15px 16px;
+                margin-bottom: 20px;
+                border: 1px solid #c4c4c4;
+                border-radius: 5px;
+                box-sizing: border-box;
+            }
+            .phone-container{
+                display:flex;
+                align-items: flex-start;
+                width: 350px;
+                padding: 0;
+                margin: 0;
+            }
+            .phone-box{
+                font-size: 17px;
+                width: 79px;
+                height: 55px;
+                padding: 15px 16px;
+                margin: 0 9.5px;
+                margin-bottom: 20px;
+                border: 1px solid #c4c4c4;
+                border-radius: 5px;
+                box-sizing: border-box;
+            }
+            .phonew{
+                font-size: 17px;
+                height:55px;
+                line-height:55px;
+            }
+            .phone-btn {
+                // margin: 0 auto;
+                width:15%;
+                height:55px;
+                font-size: 13px;
+                font-weight: 550;
+                padding: 15px 16;
+                // padding-bottom: 5px;
+                line-height:-20px;
+                border: none;
+                border-radius: 10px;
+                background-color: #000000;
+                color: #FFF;
+                cursor: pointer;
+                // overflow: hidden;
+                &:hover {
+                    background-color: lighten(#000000, 30%);
+                }
+            }
+            .phone-box:first-child{
+                margin-left:0px;
+            }
+            .input-confirm{
+                font-size: 17px;
+                width: 290px;
+                height: 55px;
+                padding: 15px 16px;
+                margin-bottom: 20px;
+                border: 1px solid #c4c4c4;
+                border-radius: 5px;
+                box-sizing: border-box;
+                margin-right:10px;
+            }
+            .join-btn, .join-btn-del {
+                margin: 0 auto;
+                width:65%;
+                font-size: 17px;
+                font-weight: 550;
+                padding: 14px 0;
+                margin-bottom: 10px;
+                border: none;
+                border-radius: 10px;
+                background-color: #000000;
+                color: #FFF;
+                cursor: pointer;
+    
+                &:hover {
+                    background-color: lighten(#000000, 30%);
+                }
+            
+            }
+            .join-btn{
+                margin-top:20px;
+                background:lighten(#000000, 30%);
+            }
+            .join-btn-del{
+                margin-bottom:30px;
+            }
+            
+            .join-find {
+                display: flex;
+                justify-content: center;
+                font-size: 14px;
+                margin-bottom: 20px;
+                overflow: hidden; 
+                font-family: "weniv";
+                list-style: none;
+                padding: 0;
+                cursor: pointer;
+    
+                .user-join::after {
+                    float: right;
+                    content: "";
+                    height: 5px;
+                    background-color: black;
+                    margin:0 10px;
+                }
+    
+            }
+        }
+    
+        .join-title {
+            color: black;
+            font-size: 18px;
+            text-align: center; 
+            line-height: 17px;
+            margin-bottom: 10px;
+            padding: 0px;
+            width:67px;
+        }
+    
+        .other-btn {
+            display:flex;
+            flex-direction: column;
+            align-items: center; 
+    
+            .btn {
+                position: relative;
+                font-size: 16px;
+                width: 350px;    
+                height: 45px;
+                color: #767676;
+                font-weight: 500;
+                margin-bottom: 10px;
+                border-radius: 5px;  
+                border: 1px solid #767676;
+            }
+    
+            .log-txt {
+                position: absolute;
+                font-size: 16px;
+                font-weight: 0;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: inline-block;  
+                text-align:center ;  
+                vertical-align: middle;
+            }
+    
+            img {
+                position: absolute;
+                top: 50%;
+                left: 0%;
+                transform: translateY(-50%);
+                vertical-align: middle;
+                margin-left: 12px;  
+            }
+        
+        }
+    
+    }
+    
+}
