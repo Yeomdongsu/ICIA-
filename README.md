@@ -257,11 +257,9 @@ function ModalBasic({ setModalOpen, sucLogin, sucLoginNaver, sucLoginGoogle }) {
 export default ModalBasic;
 ```
 - #### 일반회원<br>
-로그인과 비밀번호 input창에 onChange함수를 이용해 useState에 보관 후 '로그인' 버튼 클릭시 axios를 사용해 JSON형태로 지정한 url로<br> 
-보낸 후 intellij에서 return한 값이 공백이 아닐 경우 로그인 성공이란 alert창과 함께 받아온 값 중 mid와 grade를 sessionStorage에<br>저장 후 모달창 끄고 메인페이지로 이동합니다.<br>
+로그인과 비밀번호 input창에 onChange함수를 이용해 useState에 보관 후 '로그인' 버튼 클릭시 axios를 사용해 JSON형태로 지정한 url로 보낸 후 intellij에서 return한 값이 공백이 아닐 경우 로그인 성공이란 alert창과 함께 받아온 값 중 mid와 grade를 sessionStorage에 저장 후 모달창 끄고 메인페이지로 이동합니다.<br>
 - #### 소셜회원<br>
-네이버와 구글 api를 사용해 제가 허가한 이메일만 로그인이 되도록 하였고 로그인 시 주는 한정적인 데이터 중, 쓸 수 있는 데이터인<br>
-이름과 아이디를 세션에 저장 후 바로 axios를 사용해 데이터베이스에서 일치하는 id 정보가 없을때만 회원가입이 가능하게 했습니다.
+네이버와 구글 api를 사용해 제가 허가한 이메일만 로그인이 되도록 하였고 로그인 시 주는 한정적인 데이터 중, 쓸 수 있는 데이터인 이름과 아이디를 세션에 저장 후 바로 axios를 사용해 데이터베이스에서 일치하는 id 정보가 없을때만 회원가입이 가능하게 했습니다.
 
 ## Back_MemberController
 ```java
@@ -301,11 +299,518 @@ export default ModalBasic;
         return dbMember;
     }
 ```
-회원가입 시 비밀번호가 암호화되어 들어가기 때문에, 프론트에서 받아온 값을 매개변수로 받아 내장함수인 findById로 데이터베이스에<br>
-일치하는 회원의 데이터를 가져온 후 비교 해 일치하면 멤버 데이터를 return하고 일치하지 않는다면 null을 return합니다. 그 후 <br>
-back 세션에도 "member"란 변수에 로그인 한 회원의 데이터를 저장합니다.
+회원가입 시 비밀번호가 암호화되어 들어가기 때문에, 프론트에서 받아온 값을 매개변수로 받아 내장함수인 findById로 데이터베이스에 일치하는 회원의 데이터를 가져온 후 비교 해 일치하면 멤버 데이터를 return하고 일치하지 않는다면 null을 return합니다. 그 후 back 세션에도 "member"란 변수에 로그인 한 회원의 데이터를 저장합니다.<br><br>
+![image](https://user-images.githubusercontent.com/117874997/215289298-3d6edfe0-1d41-482c-ae87-c0a95a150ed9.png)
 
-- 아이디 찾기, 비밀번호 재설정
+## ModalId.jsx 컴포넌트
+
+※ 아이디 찾기
+```javascript
+import axios from "axios";
+import React, { useCallback, useEffect, useRef, useState } from "react"
+import logo from "./image/logo.png"
+import "./ModalId.scss";
+import ModalPwd from "./ModalPwd.jsx";
+
+const ModalId = ({ setSelectId, setModalOpen }) => {
+    const [pwd, setPwd] = useState(false);
+    const modalRef = useRef(null);
+    const [ checkValue, setCheckValue ] = useState('');
+    
+    function checkOnlyOne(id) {
+        let checkPick = document.getElementsByName('checkWrap');
+        Array.prototype.forEach.call(checkPick, function (el) {
+          el.checked = false;
+        });
+        id.target.checked = true;
+        setCheckValue(id.target.defaultValue);
+    }
+
+    useEffect(() => {
+        // 이벤트 핸들러 함수
+        const handler = (event) => {
+            // mousedown 이벤트가 발생한 영역이 모달창이 아닐 때, 모달창 제거 처리
+            if (!modalRef.current.contains(event.target)) {
+                setSelectId(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handler);
+        
+        return () => {
+            document.removeEventListener('mousedown', handler);
+        };
+    });
+
+    const selectPwd = () => {
+        setPwd(true);
+    };
+
+    const [sid, setSid] = useState("");
+
+    const [id, setId] = useState({
+        mname : "",
+        mpid : "",
+    })
+
+    const onch = useCallback((e) => {
+
+        const formObj = {
+            ...id,
+            [e.target.name] : e.target.value,
+        };
+        setId(formObj);
+        console.log(formObj);
+    }, [id]);
+
+    const selectId = (e) => {
+        e.preventDefault();
+        axios
+            .post("selectId" , id)
+            .then((res) => {
+                console.log(res);
+                console.log(res.data);
+                {res.data === "일치하는 아이디가 없습니다." ? (setSid(res.data)) : (setSid("찾으려는 아이디 : " + res.data))}
+            })
+            .catch((err) => {alert('실패'); console.log(err)});
+    }
+
+    return (
+        <div className="modal">
+           <div ref={modalRef} className="container-two">
+               <section className="user-input">
+                   <img src={logo} alt="logo" className="ig2"/>
+                   <div className="tx">가입할 때 작성한 정보를 입력해주세요 :)</div>
+                   <hr className="hr"/>
+                   <div className="radiv">
+                    <div className="radiv1">
+                        <input type="checkbox" checked name="checkWrap" onChange={(e) => checkOnlyOne(e)} className="inra1"/><span className="sp" name="checkWrap" onChange={(e) => checkOnlyOne(e)}>아이디찾기</span>
+                    </div>
+                    <div className="radiv2"> 
+                        <input type="checkbox" name="checkWrap" onChange={(e) => checkOnlyOne(e)} onClick={selectPwd} className="inra2"/><span className="sp" onClick={selectPwd}>비밀번호 찾기</span>
+                        {pwd && <ModalPwd setSelectId={setSelectId} setPwd={setPwd} setCheckValue={setCheckValue} setModalOpen={setModalOpen}/>}
+                    </div>
+                   </div>
+                   <form onSubmit={selectId}>
+                    <div className="log-other1">이름</div>
+                    <input className="inp-id" onChange={onch} name="mname" type="text" maxLength="25" required placeholder="이름을 입력하세요."/>
+                    <div className="log-other1">주민등록번호</div>
+                        <input className="inp-id" onChange={onch} name="mpid" type="text" maxLength="13" required placeholder="- 를 제외한 13자리를 입력하세요."/>
+                    <div className="tx2">{sid}</div>
+                    <button type="submit" className="log-btnid">아이디 찾기</button>
+                   </form>
+                   <button className="log-btn-del" onClick={() => setSelectId(false)}>돌아가기</button>
+               </section>
+           </div>
+        </div>        
+    );
+};
+
+export default ModalId;
+```
+가입 시 작성한 이름과 주민등록번호를 쓰고 '아이디 찾기' 버튼을 클릭 해 데이터베이스에 일치하는 데이터가 없으면 없다는 문구와 일치하는 데이터가 있다면 아이디를 알려줍니다.
+
+## Back_MemberController
+```java
+@ResponseBody
+    @PostMapping("selectId")
+    public String selectId(@RequestBody Member member){
+        log.info("selectId()");
+        log.info("" + member);
+        return mServ.selectId(member);
+    }
+```
+## Back_MemberService
+```java
+public String selectId(Member member) {
+        log.info("selectId()");
+        Member m = null;
+        String msg = "";
+
+        try {
+            m = mRepo.findByMnameAndMpid(member.getMname(),member.getMpid());
+            log.info("" + m);
+            if (m != null){
+                return m.getMid();
+            }else {
+                return msg = "일치하는 아이디가 없습니다.";
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return msg = "일치하는 아이디가 없습니다.";
+        }
+    }
+```
+프론트에서 보낸 값으로 findBy~~ 함수를 이용해 데이터베이스에 일치하는 아이디가 있다면 아이디를 return, 없다면 없다는 문자열을 return 합니다.<br><br>
+![image](https://user-images.githubusercontent.com/117874997/215290054-025e4bc1-c952-41eb-aa3f-58decaaed7b7.png)
+
+## ModalPwd.jsx 컴포넌트
+
+※ 비밀번호 재설정_1
+```javascript
+import axios from "axios";
+import React, { useCallback, useEffect, useRef, useState } from "react"
+import logo from "./image/logo.png"
+import "./ModalPwd.scss";
+import ModalPwdReset from "./ModalPwdReset.jsx";
+
+const ModalPwd = ({ setSelectId, setPwd, setCheckValue, setModalOpen }) => {
+    const modalRef = useRef(null);
+    const [reset, setReset] = useState(false);
+    const [findid, setFindid] = useState("");
+
+    const [info, setInfo] = useState({
+      mid : "",
+      mphone : "" 
+    })
+
+    const onch = useCallback(e => {
+      const formObj = {
+        ...info,
+        [e.target.name] : e.target.value,
+      };
+      setInfo(formObj);
+      console.log(formObj);
+    }, [info]);
+
+    function checkOnlyOne(id) {
+        let checkPick = document.getElementsByName('checkWrap');
+        Array.prototype.forEach.call(checkPick, function (el) {
+          el.checked = false;
+        });
+        id.target.checked = true;
+        setCheckValue(id.target.defaultValue);
+    }
+
+    useEffect(() => {
+        // 이벤트 핸들러 함수
+        const handler = (event) => {
+            // mousedown 이벤트가 발생한 영역이 모달창이 아닐 때, 모달창 제거 처리
+            if (!modalRef.current.contains(event.target)) {
+                setSelectId(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handler);
+        
+        return () => {
+            document.removeEventListener('mousedown', handler);
+        };
+    });
+
+    const [dis, setDis] = useState(false);
+
+        function onClickCertification() {
+            /* 1. 가맹점 식별하기 */
+            const { IMP } = window;
+            IMP.init("???");    
+
+            /* 2. 본인인증 데이터 정의하기 */
+            const data = {
+              merchant_uid: `mid_${new Date().getTime()}`,  // 주문번호
+              company: 'WeddingDive',                    // 회사명 또는 URL
+              carrier: '',                               // 통신사
+            //   id: `${value}`,
+              name: '',                                  // 이름
+              phone: '',                        // 전화번호
+              popup:true,
+            };
+      
+            /* 4. 본인인증 창 호출하기 */
+            IMP.certification(data, callback);
+          }
+      
+          /* 3. 콜백 함수 정의하기 */
+          function callback(response) {
+            const {
+              success,
+              merchant_uid,
+              error_msg,
+            } = response;
+      
+            if (success) {
+              setDis(true);
+              alert('본인인증 성공');
+            } else {
+              alert(`본인인증 실패: ${error_msg}`);
+            }
+          }
+
+    const resetPage = (e) => {
+      e.preventDefault();
+
+      const pwd1 = document.getElementById("input1");
+      const pwd2 = document.getElementById("input2");
+
+      if(pwd1.value == "" || pwd2.value == ""){
+        return alert("빈 칸 안에 값을 입력하세요");
+      }
+
+      console.log(info);
+      axios
+        .post("/checkPwd" , info)
+        .then((res) => {
+          console.log(res.data);
+          if(res.data === "조건에 일치하는 회원이 없습니다."){
+            alert(res.data);
+          }else {
+            setFindid(res.data);
+            setReset(true);
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+
+    return (
+        <div className="modal">
+           <div ref={modalRef} className="container-three">
+               <section className="user-input">
+                   <img src={logo} alt="logo" className="ig2"/>
+                   <div className="tx">가입할 때 작성한 정보를 입력해주세요 :)</div>
+                   <hr className="hr"/>
+                   <div className="radiv">
+                    <div className="radiv1">
+                        <input type="checkbox" className="inra1" name="checkWrap" onChange={(e) => checkOnlyOne(e)} onClick={() => setPwd(false)}/><span className="sp" onClick={() => setPwd(false)}>아이디찾기</span>
+                    </div>
+                    <div className="radiv2"> 
+                        <input type="checkbox" className="inra2" checked name="checkWrap" onChange={(e) => checkOnlyOne(e)} /><span className="sp">비밀번호 찾기</span>
+                    </div>
+                   </div>
+                   <div className="log-other1">아이디</div>
+                   <input className="inp-id" type="text" id="input1" name="mid" onChange={onch} maxLength="25" required placeholder="아이디를 입력하세요."/>
+                   <div className="log-other1">핸드폰 번호</div>
+                   <div>
+                    <input className="phonenum" type="text" id="input2" name="mphone" onChange={onch} maxLength="11" required placeholder="핸드폰 번호를 입력하세요."/>
+                   <button className="phonebtn" style={{lineHeight:'18px', paddingTop:'-25px'}} onClick={onClickCertification}>인증<br/>번호</button></div>
+                   {dis === true ? (<button className="log-btnid" id="joinIn" onClick={resetPage}>비밀번호 재설정하기</button>) : ( <button className="log-btnid2" id="joinIn" disabled>비밀번호 재설정하기</button> )}
+                   {/* //  <button className="log-btnid" id="joinIn" disabled onClick={resetPage}>비밀번호 재설정하기</button> */}
+                   <button className="log-btn-del" onClick={() => setSelectId(false)}>돌아가기</button>
+               </section>
+               {reset && <ModalPwdReset setReset={setReset} setModalOpen={setModalOpen} findid={findid}/>}
+           </div>
+        </div>        
+    );
+};
+
+export default ModalPwd;
+```
+가입 시 작성한 아이디와 핸드폰번호를 쓰고 '인증번호' 버튼을 클릭 해 인증확인 절차까지 밟아야 '비밀번호 재설정' 버튼의 비활성화가 풀리게 했습니다. 이후 작성한 정보와 일치하는
+회원이 데이터베이스에 있을 경우, 그 회원의 아이디를 useState에 저장 후 비밀번호 재설정하는 모달창으로 이동합니다.
+
+## Back_MemberController
+```java
+    @ResponseBody
+    @PostMapping("checkPwd")
+    public String checkPwd(@RequestBody Member member){
+        log.info("checkPwd()");
+        return mServ.checkPwd(member);
+    }
+```
+## Back_MemberService
+```java
+        public String checkPwd(Member member) {
+        log.info("checkPwd()");
+        String msg = "";
+
+        try {
+            Member id = mRepo.findByMidAndMphone(member.getMid(),member.getMphone());
+            log.info("조건에 일치하는 ID : " + id);
+            if (id != null){
+                return id.getMid();
+            }else {
+                return msg = "조건에 일치하는 회원이 없습니다.";
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return msg = "조건에 일치하는 회원이 없습니다.";
+        }
+    }
+```
+프론트에서 보낸 값으로 findBy~~ 함수를 이용해 데이터베이스에 일치하는 아이디가 있다면 아이디를 return, 없다면 없다는 문자열을 return 합니다.<br><br>
+<br><br>
+![image](https://user-images.githubusercontent.com/117874997/215290351-a523b48e-4068-4803-b931-a7a0e54866ce.png)
+
+## ModalPwdReset.jsx 컴포넌트
+
+※ 비밀번호 재설정_2
+```javascript
+import axios from "axios";
+import React, { useCallback, useEffect, useRef, useState } from "react"
+import logo from "./image/logo.png"
+import "./ModalPwdReset.scss";
+
+const ModalPwdReset = ({ setSelectId, setReset, findid, setModalOpen }) => {
+    const modalRef = useRef(null);
+    
+    useEffect(() => {
+        // 이벤트 핸들러 함수
+        const handler = (event) => {
+            // mousedown 이벤트가 발생한 영역이 모달창이 아닐 때, 모달창 제거 처리
+            if (!modalRef.current.contains(event.target)) {
+                setSelectId(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handler);
+        
+        return () => {
+            document.removeEventListener('mousedown', handler);
+        };
+    });
+
+    const vd = {
+        paddingTop : "2px",
+        paddingBottom: "17px",
+        fontSize: "30px",
+    }
+
+    const [newpwd, setNewpwd] = useState({
+        mid : findid,
+        mpwd : ""
+    })
+
+    const onch = useCallback(e => {
+        const formObj = {
+            ...newpwd,
+            mpwd : e.target.value
+        };
+        setNewpwd(formObj);
+        console.log(formObj);
+    });
+
+    const check = () => {
+        let pwd11 = document.getElementById("pwd11");
+        let pwd22 = document.getElementById("pwd22");
+        let pwdresult = document.getElementById("pwdresult");
+        let cresult = document.getElementById("cresult");
+
+        const pwdRegExpp = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+
+        if(pwd11.value == ""){
+            pwdresult.style.display="none";
+        }else if(!pwdRegExpp.test(pwd11.value)){
+            pwdresult.innerHTML="숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!"
+            pwdresult.style.display="block";
+            pwdresult.style.color="red";
+        }else if(pwdRegExpp.test(pwd11.value)) {
+            pwdresult.innerHTML=("안전한 비밀번호 입니다.");
+            pwdresult.style.display="block";
+            pwdresult.style.color="limeGreen";
+        }
+        
+        if(pwd11.value == "" || pwd22.value==""){
+            cresult.style.display="none";
+        }else if(pwd11.value==pwd22.value){
+            cresult.style.display="block";
+            cresult.style.color="limeGreen";
+            cresult.innerHTML="비밀번호가 일치합니다.";
+        }else{
+            cresult.style.display="block";
+            cresult.style.color="red";
+            cresult.innerHTML="비밀번호가 일치하지않습니다."
+        }
+
+    }
+
+    const resetPwd = (e) => {
+        e.preventDefault();
+  
+        let pwd1 = document.getElementById("pwd11");
+        let pwd2 = document.getElementById("pwd22");
+        
+        if(pwd1.value == "" || pwd2.value == ""){
+          return alert("빈 칸 안에 값을 입력하세요");
+        }else if(pwd1.value !== pwd2.value){
+          return alert("동일한 비밀번호를 입력하세요");
+        }
+  
+        console.log(newpwd);
+        axios
+            .post("/resetPwd" , newpwd)
+            .then((res) => {
+                console.log(res.data);
+                if(res.data === "성공"){
+                    alert("새로운 비밀번호로 로그인해주세요");
+                    setModalOpen(false);
+                }
+            })
+            .catch((err) => console.log(err));
+    }
+
+    return (
+        <div className="modal">
+           <div ref={modalRef} className="container-four">
+               <section className="user-input">
+                   <img src={logo} alt="logo" className="ig2"/>
+                   <div className="tx">앞으로 사용할 비밀번호를 입력하세요 :)</div>
+                   <hr className="hr"/>
+                   <div>
+                        <input type="checkbox" checked/><span className="sp2"> 비밀번호 재설정하기</span>
+                    </div>
+                   <div className="newPwd1">새로운 비밀번호</div>
+                   <input className="inp-id" id="pwd11" onChange={(e) => {check(); onch(e)}} name="mpwd" type="password" required placeholder="비밀번호를 입력하세요."/>
+                   <div id="pwdresult"></div>
+                   <div className="newPwd2">비밀번호 확인</div>
+                   <input className="inp-id" id="pwd22" onChange={check} type="password" required placeholder="다시 한번 입력해주세요."/>
+                   <div id="cresult" style={{marginBottom:"15px"}}></div>
+                   {/* <div style={vd}>💛💚💙💜🖤</div> */}
+                   <button className="log-btnid" onClick={resetPwd}>재설정하기</button>
+                   <button className="log-btn-del" onClick={() => setReset(false)}>돌아가기</button>
+               </section>
+           </div>
+        </div>        
+    );
+};
+
+export default ModalPwdReset;
+```
+재설정할 비밀번호를 조건식에 맞게 비밀번호 확인 input창 까지 동일하게 썼을때만 재설정이 완료됩니다.
+
+## Back_MemberController
+```java
+    @ResponseBody
+    @PostMapping("resetPwd")
+    public String resetPwd(@RequestBody Member member){
+        log.info("resetPwd()");
+        return mServ.resetPwd(member);
+    }
+```
+## Back_MemberService
+```java
+    public String resetPwd(Member member) {
+        log.info("resetPwd()");
+        Member dbMember = null;
+        String msg = "";
+
+        try {
+            dbMember = mRepo.findById(member.getMid()).get();
+            log.info("dbMember -> " + dbMember);
+            if (dbMember != null){
+                String newPwd = encoder.encode(member.getMpwd());
+                dbMember.setMpwd(newPwd);
+                mRepo.save(dbMember);
+                msg = "성공";
+            }else {
+                msg = "실패";
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return msg;
+    }
+```
+프론트에서 받아온 값으로 findBy~~ 함수를 이용해 재설정할 비밀번호를 암호화 한 후 save()를 이용해 update를 해줍니다.
+<br><br>
+![image](https://user-images.githubusercontent.com/117874997/215290676-ea154b87-8e87-4ab2-98a5-03ab5be1d945.png)
+
+## ModalPwd.jsx 컴포넌트
+
+※ 비밀번호 재설정
+
+## ModalPwd.jsx 컴포넌트
+
+※ 비밀번호 재설정
+
 - 웨딩 뉴스 페이지 	 
 - 1:1문의 페이지
 - 챗봇 라이브러리 입니다.
