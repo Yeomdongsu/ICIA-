@@ -5,16 +5,16 @@ ICIA 최종프로젝트 Wedding Dive
 사용 프로그램 : visual studio, intellj, Mysql<br><br>
 사용 언어 : Html, CSS, JavaScript, React, Java<br>
 ### 환경 구성
-___
+---
 IDE(통합개발환경) : IntelliJ Ultimate(유료 버전), Visual Studio Code<br><br>
 프레임워크 : Spring Boot<br><br>
 데이터베이스 : Mysql<br><br>
 DB 접근 기술 : JPA<br><br>
 View 템플릿 : React<br>
 ### 프로젝트 설명
-___
+---
 결혼하는 과정에 필요한 스드메, 신혼여행, 예식장 등 필요한걸 하나에 모아논 웨딩 중개 사이트입니다.<br>
-___
+***
 ### **제가 구현한 기능으로는**<br>
 - #### 로그인(일반회원, 소셜로그인(네이버, 구글)<br>
 - #### 아이디찾기, 비밀번호 찾기(재설정)<br>
