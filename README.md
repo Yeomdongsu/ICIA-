@@ -1034,12 +1034,10 @@ export default ServiceCenterInquiry;
 - #### 글 제목 검색 후 화면<br>
 findBy~~Containing을 이용해 프론트에서 넘겨준 값이 포함되어있는 게시글들만 DESC(내림차순)으로 반환합니다.<br>
 
-#### 첫 화면 
-<br>
+#### 첫 화면<br>
 ![image](https://user-images.githubusercontent.com/117874997/215291950-f4a5b511-081f-4eda-bf61-ab81259ec376.png)
 
-#### 글 제목 검색 후 화면
-<br>
+#### 글 제목 검색 후 화면<br>
 ![image](https://user-images.githubusercontent.com/117874997/215291978-37bc474b-55c2-4e9f-bcba-6fa26bb15acc.png)
 
 ## ServiceCenterWrite.jsx 컴포넌트
