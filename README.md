@@ -825,28 +825,6 @@ import { el } from "date-fns/locale";
 const df = (date) => moment(date).format("YYYY-MM-DD HH:mm");
 
 const ServiceCenterInquiry = () => {
-    const dv = {
-        display: "flex",
-        justifyContent: "end",
-        width: "100%",
-        margin: "30px 0 60px 0",
-    }
-    const input = {
-        border: "1px solid #ddd",
-        fontSize : "18px",
-        paddingLeft : "10px",
-        width : "350px",
-    }  
-    const searchBtn = {
-        backgroundColor : "#C3B6D9",
-        width : "60px", 
-    }
-    const writeBtn = {
-        backgroundColor : "#C3B6D9", 
-        width : "160px",    
-        marginLeft : "330px",
-    }
-
     const nav = useNavigate();
     let pnum = sessionStorage.getItem("pageNum");
 
@@ -1143,13 +1121,544 @@ findBy~~Containing을 이용해 프론트에서 넘겨준 값이 포함되어있
 #### 글쓰기 화면<br><br>
 ![image](https://user-images.githubusercontent.com/117874997/215292380-30bab833-913b-45cc-8107-675322ae2ab0.png)
 
-※ 웨딩 뉴스 페이지
+## ServiceCenterDetail.jsx 컴포넌트
+
+※ 게시글 상세보기 ( 게시글 삭제(관리자만), 게시글 댓글 작성(관리자만), 게시글 댓글 삭제(관리자만) )
+
+```javascript
+import EstimateBanner from "../estimate/EstimateBanner";
+import Footer from "../footer/Footer";
+import Button from "../form/Button";
+import Header from "../header/Header";
+import Section from "../main/Section";
+import moment from "moment/moment";
+import { useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import axios from "axios";
+import "./ServiceCenterDetail.scss";
+
+const df = (date) => moment(date).format("YYYY-MM-DD HH:mm");
+const df2 = (date) => moment(date).format("YYYY-MM-DD");
+
+const ServiceCenterDetail = () => {
+   
+    const nav = useNavigate();
+    const [board, setBoard] = useState({});
+
+    const grade = sessionStorage.getItem("grade");
+    const bn = localStorage.getItem("bno");
+
+    const [comList, setComList] = useState({});
+
+    useEffect(() => {
+        const mid = sessionStorage.getItem("mid");
+        console.log(comList);
+
+        if(mid === null){
+            alert("로그인 후 가능한 기능입니다");
+            nav("/");
+            return;
+        }
+
+        // console.log(bn); //게시글번호
+
+        axios
+        .get("/ServiceCenterDetail", {params: {bno:bn, type:"serviceCenter"} })
+        .then((res) => {
+            // console.log(res);
+            // console.log(res.data);
+            setBoard(res.data);
+        })
+        .catch((err) => console.log(err));
+
+        axios
+        .get("ScommentList", {params : {mentbno:bn}})
+        .then((res) => {
+            // console.log(res.data);
+            setComList(res.data);
+            
+        })
+        .catch((err) => console.log(err));
+
+    }, []);
+
+    const [comment, setComment] = useState({
+        mentstr : "",
+        mentmid : grade,
+        mentbno : bn,
+    });
+
+    const {mentstr, mentmid, mentbno} = comment;
+
+    const onch = (e) => {
+        const Obj = {
+            ...comment,
+            [e.target.name] : e.target.value,
+        }
+        setComment(Obj);
+    };
+
+    const com = () => {
+        // console.log(comment);
+
+        if(comList == ""){
+            axios
+            .post("Swritecomment" , comment)
+            .then((res) => {
+                console.log(res.data);
+
+                const Obj = {
+                    mentstr : "",
+                    mentmid : grade,
+                    mentbno : bn,            
+                }
+                setComment(Obj);
+            })
+            .catch((err) => console.log(err));
+        }else{
+            alert("댓글은 최대 1개만 가능합니다.");
+                const Obj = {
+                    mentstr : "",
+                    mentmid : grade,
+                    mentbno : bn,            
+                }
+                setComment(Obj);
+        }
+        
+    }
+
+    const deleteComment = () => {
+        // e.preventDefault();
+
+        let confirm = window.confirm('삭제하시겠습니까?');
+        
+        if(confirm === true){
+            console.log(comList);
+
+            axios
+                .post("deleteComment", comList)
+                .then((res) => {
+                    console.log(res);
+                })
+                .catch((err) => console.log(err));
+        }
+    }
+
+    const SboardDel = () => {
+        let confirm = window.confirm("이 게시글을 삭제하시겠습니까?");
+
+        if(confirm === true){
+
+            if(comList == ""){
+                axios
+                .post("SboardDel", board)
+                .then((res) => {
+                    console.log(res.data);
+                    if(res.data == "게시글 삭제 성공"){
+                        alert("게시글이 삭제되었습니다.");
+                        nav("/ServiceCenter");
+                    }
+                })
+                .catch((err) => console.log(err));
+
+            }else {
+                axios
+                .post("SboardDel", board)
+                .then((res) => {
+                    console.log(res.data);
+                    if(res.data == "게시글 삭제 성공"){
+                        alert("게시글이 삭제되었습니다.");
+                        nav("/ServiceCenter");
+                    }
+                })
+                .catch((err) => console.log(err));
+
+                axios
+                .post("deleteComment", comList)
+                .then((res) => {
+                    console.log(res.data);
+                })
+                .catch((err) => console.log(err));
+
+            }
+        }
+    }
+
+    return (
+        <div>
+            <Header />
+            <EstimateBanner />
+            <Section>
+            <div className="SMain">
+                <form className="SContent">
+                    <div style={{marginTop:"-30px", marginBottom:"25px"}}>
+                        <input style={{width:"1000px", height:"45px"}} readOnly
+                        className="SInput" value={board.btitle}/>
+                        <div className="Sinfo">
+                            <span>NO.&nbsp;{board.bno}</span>
+                            <span style={{paddingLeft : "110px"}}>작성자 &nbsp;: &nbsp;{board.bmid}</span>
+                            <span>작성일 &nbsp;: &nbsp;{df(board.bdate)}</span>
+                        </div>
+                        <textarea style={{width: "1000px", height:"500px"}} onScroll readOnly
+                        className="STextarea" placeholder="내용" value={board.bstr}/>
+                    </div>
+                    {grade === "admin" ? (
+                        <div>
+                            <Button type="button" onClick={()=>nav("/ServiceCenter")} style={{width:"150px", height:"50px", marginLeft:"400px", backgroundColor : "#C9A3B6"}}>목록</Button>
+                            <Button type="button" onClick={SboardDel} style={{width:"150px", height:"50px", marginLeft:"300px"}}>게시글 삭제</Button>              
+                        </div>
+                    ) : (<Button type="button" onClick={()=>nav("/ServiceCenter")} style={{width:"150px", height:"50px", backgroundColor : "#C9A3B6"}}>목록</Button>)}
+                </form>
+                <form className="SContent">
+                    <div style={{marginTop:"20px", display:"flex"}}>
+                        {grade === "admin" ? (
+                            <>
+                                <input className="Sinputdiv" name="mentstr" value={mentstr} onChange={onch} />
+                                <Button style={{width:"150px", height:"55px", backgroundColor : "#C9A3B6"}} onClick={com}>작성하기</Button>
+                            </>
+                        ) : (
+                            <>
+                                <input className="Sinputdiv" name="mentstr" readOnly placeholder="관리자만 쓸 수 있는 댓글입니다."/>
+                                <Button style={{width:"150px", height:"55px",backgroundColor : "#C9A3B6"}} onClick={(e) => {e.preventDefault(); alert("관리자만 쓸 수 있는 댓글입니다.")}}>작성하기</Button>
+                            </>
+                        )}
+                    </div>
+                    {comList !== "" ? (
+                    <div className="Sdivdiv">
+                        <div className="Sdivbtn">
+                            <div>
+                                <span>관리자</span>
+                            </div>
+                            <div>
+                                <span style={{marginRight:"15px"}}>{df2(comList.mentdate)}</span>
+                                {grade === "admin" ? (<button style={{border:"none", background:"none", fontSize:"17px", color:"red", cursor:"pointer"}} onClick={deleteComment}>삭제하기</button>) : (null)}
+                            </div>
+                        </div>
+                        <input className="Sinputre" value={comList.mentstr} />
+                    </div>
+                    ) : (
+                    <div className="Sdivdiv">
+                        <input className="Sinputre" style={{textAlign:"center"}} placeholder="댓글이 존재하지 않습니다." readOnly />
+                    </div>
+                    )}
+                </form>
+            </div>
+            </Section>
+            <Footer />
+        </div>
+    );
+}
+export default ServiceCenterDetail;
+```
+게시글 전체보기 화면에서 글 제목을 클릭했을 때 이동되는 상세페이지 컴포넌트입니다. 클릭한 글의 번호를 localStorage에 저장 후 해당하는 글의 상세페이지로 이동합니다. 클릭 시에 sessionStorage에서 grade값을 가져와 관리자인 경우에는 상세페이지 이동, 일반회원일 때는 글의 비밀번호를 작성해 일치할때만 이동하게 합니다. 1:1상담 게시판이기 때문에 댓글은 관리자만 달 수 있고 관리자일 경우에만 회원 게시글 삭제와 관리자 댓글을 삭제할 수 있게 했습니다.
+
+- #### 해당 게시글 상세정보 가져오기
+## Back_BoardController 
+```java
+    @GetMapping("ServiceCenterDetail")
+    public Board ServiceCenterDetail(@RequestParam int bno, String type){
+        log.info("ServiceCenterDetail()");
+        return bServ.ServiceCenterDetail(bno, type);
+    }
+```
+## Back_BoardService
+```java
+    public Board ServiceCenterDetail(int bno, String type) {
+        log.info("ServiceCenterDetail()");
+        Board board = null;
+
+        try{
+            board = bRepo.findByBnoAndBtype(bno,type);
+            log.info("board 값 : " + board);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            board = null;
+        }
+        return board;
+    }
+```
+
+- #### 해당 게시글 댓글 달기(관리자만)
+## Back_BoardController 
+```java
+    @PostMapping("Swritecomment")
+    public String Swritecomment(@RequestBody Comment comment){
+        log.info("Swritecomment()");
+        return bServ.Swritecomment(comment);
+    }
+```
+## Back_BoardService
+```java
+    public String Swritecomment(Comment comment) {
+        log.info("Swritecomment()");
+        String msg = "";
+
+        try {
+            cRepo.save(comment);
+            msg = "성공";
+        }catch (Exception e){
+            e.printStackTrace();
+            msg = "실패";
+        }
+        return msg;
+    }
+```
+- #### 해당 게시글 댓글 출력
+## Back_BoardController 
+```java
+    @GetMapping("ScommentList")
+    public Comment ScommentList(@RequestParam int mentbno){
+        log.info("ScommentList()");
+        return bServ.ScommentList(mentbno);
+    }
+```
+## Back_BoardService
+```java
+    public Comment ScommentList(int mentbno) {
+        log.info("ScommentList()");
+        Comment comment = null;
+
+        try{
+            comment = cRepo.findByMentbno(mentbno);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return comment;
+    }
+```
+- #### 해당 게시글 댓글 삭제(관리자만)
+## Back_BoardController 
+```java
+    @PostMapping("deleteComment")
+    public String deleteComment(@RequestBody Comment comment){
+        log.info("deleteComment()");
+        return bServ.deleteComment(comment);
+    }
+```
+## Back_BoardService
+```java
+    public String deleteComment(Comment comment) {
+        log.info("deleteComment()");
+        String msg = "";
+
+        try {
+            cRepo.delete(comment);
+            msg = "성공";
+        }catch (Exception e){
+            e.printStackTrace();
+            msg = "실패";
+        }
+
+        return msg;
+    }
+```
+<br>
+#### 회원이 본인 글 확인할 때<br><br>
+![image](https://user-images.githubusercontent.com/117874997/215292806-d22fa74f-871a-4cc9-8768-c35f1e763052.png)
+
+#### 관리자가 회원 글 확인할 때<br><br>
+![image](https://user-images.githubusercontent.com/117874997/215292887-60fa539a-a17b-4a2b-a565-99c30033d526.png)
+
+## WedNews.jsx 컴포넌트
+
+※ 웨딩 뉴스 게시판 
+```javascript
+import React, { useCallback, useEffect, useState } from "react";
+import Section from "../main/Section";
+import Button from "../form/Button";
+import moment from "moment/moment";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import StableRow from "../servicecenter/StableRow";
+import StableColumn from "../servicecenter/StableColumn";
+import Paging from "../servicecenter/Spaging";
+import { fi } from "date-fns/locale";
+// import Paging from "./Spaging";
+
+const df = (date) => moment(date).format("YYYY-MM-DD HH:mm");
+
+const WedNews = () => {
+    const dv = {
+        display: "flex",
+        justifyContent: "end",
+        width: "100%",
+        // marginBottom : "-5px",
+        margin: "-20px 0px 60px 0",
+        // paddingRight: "500px",
+        zIndex : "10",
+    }
+    const writeBtn = {
+        backgroundColor : "#C3B6D9",
+        // marginTop:"-42px",
+        marginTop:"-35px",
+        width : "160px",    
+        // marginLeft : "330px",
+    }
+
+    const nav = useNavigate();
+    let pnum = sessionStorage.getItem("pageNum");
+    const grade = sessionStorage.getItem("grade");
+
+    const [bitem, setBitem] = useState({});
+
+    const [flist, setFlist] = useState([
+        {
+        //   bfnum: 0,
+        //   bfbid: 0,
+        //   bfsysname: "",
+        //   bforiname: "Nothing",
+          image: "",
+        },
+      ]);
+    
+
+    const { bdate, bfList, bmid, bno, bstr, btitle, btype } = bitem;
+
+    const [page, setPage] = useState({
+      totalPage: 0,
+      pageNum: 1,
+    });
+      
+    //게시글 목록을 서버로부터 가져오는 함수
+    const getList = (pnum) => {
+
+        axios
+        .get("/newsList", { params: { pageNum: pnum, type: "News" } })
+        .then((res) => {
+            console.log(res.data);
+            const { bList, totalPage, pageNum } = res.data;
+            setPage({ totalPage: totalPage, pageNum: pageNum });
+            setBitem(bList);
+            sessionStorage.setItem("pageNum", pageNum);
+        })
+        .catch((err) => console.log(err));
+
+        // console.log(bitem);
+        axios
+        .get("/newsListImg", { params : { type : "News" } })
+        .then((res) => {
+            console.log(res.data);
+
+            let prevFid = -1;
+
+            if (res.data.length > 0) {
+                let newFileList = [];
+                for (let i = 0; i < res.data.length; i++) {
+                    console.log(res.data[i]);
+                    if (res.data[i].fid === prevFid) continue;
+                    const newFile = {
+                        image: "upload/" + res.data[i].fsysname,
+                    };
+                    newFileList.push(newFile);
+                    prevFid = res.data[i].fid;
+                }
+                // console.log(newFileList);
+                setFlist(newFileList);
+            }
+        })
+        .catch((err) => console.log(err));
+    };
+
+    const getBoard = useCallback((bno) => {
+        //보여질 게시글 번호를 localStorage에 저장(글번호 유지를 위해)
+            localStorage.setItem("bno", bno);
+            nav("/WedNewsDetail");
+    }, []);
+
+    //main 페이지가 화면에 보일 때 서버로부터 게시글 목록을 가져온다.
+    useEffect(() => {
+        // pnum !== null ? getList(pnum) : getList(1);
+        getList(1);
+        } ,[]);
+
+    //출력할 게시글 목록 작성
+    let list = null;
+    if (bitem.length === 0) {
+        list = (<div>뉴스가 존재하지 않습니다.</div>);
+    } else {
+        list = Object.values(bitem).map((item) => (
+            <>
+                <div key={item.bno} style={{height:"180px",overflow:"hidden",}}>
+                    <h1 style={{cursor:"pointer"}} onClick={() => getBoard(item.bno)}>{item.btitle}</h1>
+                    <div style={{height:"90px",overflow:"hidden",marginTop:"5px",marginBottom:"5px",cursor:"pointer"}} onClick={() => getBoard(item.bno)}>{item.bstr}</div>
+                    <span>🐥 {item.bmid} 기자  ㅣ {df(item.bdate)}</span>
+                </div>
+                <hr/>
+            </>
+    ));
+    }
+
+    const viewFlist = flist.map((v, i) => {
+        console.log(v);
+        return (
+            <>
+                <div key={i} style={{height:"180px",marginTop:"3px", marginBottom:"-3px"}}>
+                {v.image && <img src={v.image} style={{width:"240px",height:"170px",cursor:"pointer"}} alt="preview-img" />}
+                </div>
+                <hr/>
+            </>
+        );
+      });
+    
+    const write = (e) => {
+        e.preventDefault();
+        nav("/WedNewsWrite");
+    }
+
+    return (
+            <div data-aos="fade-up">
+                <Section title="웨딩뉴스" style={{width:"1100px", height : "1880px", marginBottom:"-60px"}}>
+                    <div style={dv} >
+                        {grade === "admin" ? (<Button style={writeBtn} onClick={write}>뉴스 쓰기</Button>) : (null)}
+                    </div>
+                    <div style={{display:"flex", alignItems:"center", marginTop:"-500px", height:"1200px"}}>
+                        <div style={{marginRight:"10px", marginTop:"70px", height:"250px"}}>{viewFlist}</div>
+                        <div style={{marginTop:"70px", height:"250px", width:"850px"}}>{list}</div>
+                    </div>
+                    {/* <div style={{marginTop:"500px", width:"100%", height:"300px"}}>
+                        <Paging page={page} getList={getList} />
+                        <div style={dv} >
+                            {grade === "admin" ? (<Button style={writeBtn} onClick={write}>뉴스 쓰기</Button>) : (null)}
+                        </div>
+                    </div> */}
+                </Section>
+            </div>
+    );
+}    
+export default WedNews;
+```
+
 - #### 일반회원<br>
-제목을 클릭 시 클릭한 글의 번호를 localStorage에 저장 후 해당하는 글의 상세페이지로 이동합니다.
+
 ## ModalPwd.jsx 컴포넌트
+
+## ServiceCenterInquiry.jsx 컴포넌트
 
 ※ 챗봇 라이브러리 
  
+## ServiceCenterInquiry.jsx 컴포넌트
+
+※ 챗봇 라이브러리 
+
+## ServiceCenterInquiry.jsx 컴포넌트
+
+※ 챗봇 라이브러리 
+
+## ServiceCenterInquiry.jsx 컴포넌트
+## Back_BoardController
+```java
+    @PostMapping("serviceCenterWrite")
+    public String serviceCenterWrite(@RequestBody Board board){
+        log.info("serviceCenterWrite()");
+        return bServ.serviceCenterWrite(board);
+    }
+```
+※ 챗봇 라이브러리 
+ 
+   
 
 
 
