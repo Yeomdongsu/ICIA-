@@ -10,7 +10,7 @@ IDE(통합개발환경) : IntelliJ Ultimate(유료 버전), Visual Studio Code<b
 데이터베이스 : Mysql<br><br>
 DB 접근 기술 : JPA<br><br>
 View 템플릿 : React<br>
-## 프로젝트 설명
+프로젝트 설명<br>
 결혼하는 과정에 필요한 스드메, 신혼여행, 예식장 등 필요한걸 하나에 모아논 웨딩 중개 사이트입니다.<br>
 ## 
 **제가 구현한 기능으로는**<br>
