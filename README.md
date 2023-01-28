@@ -1455,7 +1455,7 @@ export default ServiceCenterDetail;
         return msg;
     }
 ```
-<br>
+
 #### 회원이 본인 글 확인할 때<br><br>
 ![image](https://user-images.githubusercontent.com/117874997/215292806-d22fa74f-871a-4cc9-8768-c35f1e763052.png)
 
@@ -1464,7 +1464,7 @@ export default ServiceCenterDetail;
 
 ## WedNews.jsx 컴포넌트
 
-※ 웨딩 뉴스 게시판 
+※ 웨딩 뉴스 ( 글쓰기와 상세보기는 위의 상담게시판과 많이 겹쳐 코드를 제외했습니다 )
 ```javascript
 import React, { useCallback, useEffect, useState } from "react";
 import Section from "../main/Section";
@@ -1481,23 +1481,6 @@ import { fi } from "date-fns/locale";
 const df = (date) => moment(date).format("YYYY-MM-DD HH:mm");
 
 const WedNews = () => {
-    const dv = {
-        display: "flex",
-        justifyContent: "end",
-        width: "100%",
-        // marginBottom : "-5px",
-        margin: "-20px 0px 60px 0",
-        // paddingRight: "500px",
-        zIndex : "10",
-    }
-    const writeBtn = {
-        backgroundColor : "#C3B6D9",
-        // marginTop:"-42px",
-        marginTop:"-35px",
-        width : "160px",    
-        // marginLeft : "330px",
-    }
-
     const nav = useNavigate();
     let pnum = sessionStorage.getItem("pageNum");
     const grade = sessionStorage.getItem("grade");
@@ -1506,10 +1489,6 @@ const WedNews = () => {
 
     const [flist, setFlist] = useState([
         {
-        //   bfnum: 0,
-        //   bfbid: 0,
-        //   bfsysname: "",
-        //   bforiname: "Nothing",
           image: "",
         },
       ]);
@@ -1630,35 +1609,211 @@ const WedNews = () => {
 }    
 export default WedNews;
 ```
+사진을 불러오고 출력하는거 이외에는 상담문의게시판과 동일합니다. 뉴스 페이지가 처음 열렸을 때 데이터베이스의 file 테이블에서 type이 "News"인 파일만 가져옵니다. 각 게시글 앞에 대표사진 1개만 불러오기 위해 if문에 continue를 이용해 flist에 넣은 후 map()을 이용해 각 해당 뉴스와 뉴스에 맞는 대표사진을 출력합니다.
 
-- #### 일반회원<br>
-
-## ModalPwd.jsx 컴포넌트
-
-## ServiceCenterInquiry.jsx 컴포넌트
-
-※ 챗봇 라이브러리 
- 
-## ServiceCenterInquiry.jsx 컴포넌트
-
-※ 챗봇 라이브러리 
-
-## ServiceCenterInquiry.jsx 컴포넌트
-
-※ 챗봇 라이브러리 
-
-## ServiceCenterInquiry.jsx 컴포넌트
 ## Back_BoardController
 ```java
-    @PostMapping("serviceCenterWrite")
-    public String serviceCenterWrite(@RequestBody Board board){
-        log.info("serviceCenterWrite()");
-        return bServ.serviceCenterWrite(board);
+    @GetMapping("newsListImg")
+    public List<Files> newsListImg(@RequestParam String type){
+        log.info("newsListImg()");
+        return bServ.newsListImg(type);
     }
 ```
+## Back_BoardService
+```java
+    public List<Files> newsListImg(String type) {
+        log.info("newsListImg()");
+
+        List<Files> bfList = bfRepo.findByFtype(type);
+        return bfList;
+    }
+```
+
+#### 뉴스 전체출력 화면<br><br>
+![image](https://user-images.githubusercontent.com/117874997/215294422-d28516c6-9b0a-4463-907f-43b5bda73d82.png)
+
+#### 뉴스 작성화면 (상담게시판과 겹치는 부분이 많아 이미지만 첨부합니다.)<br><br>
+![image](https://user-images.githubusercontent.com/117874997/215294135-269530f1-ad47-4c9e-bc89-856738f66daf.png)
+
+#### 뉴스 상세보기 화면_1(상담게시판과 겹치는 부분이 많아 이미지만 첨부합니다.)<br><br>
+![image](https://user-images.githubusercontent.com/117874997/215294274-09444e9d-3881-4b0b-ab0f-5b435ebc5bdb.png)
+
+#### 뉴스 상세보기 화면_2(상담게시판과 겹치는 부분이 많아 이미지만 첨부합니다.)<br><br>
+![image](https://user-images.githubusercontent.com/117874997/215294304-21a03e7f-78be-42c0-b50a-42bbfbecb028.png)
+
+## ChattingBot.jsx 컴포넌트
+
 ※ 챗봇 라이브러리 
- 
-   
+```javascript
+import React from "react";
+import { ThemeProvider } from "styled-components";
+import ChatBot from "react-simple-chatbot";
+import jb from "./jb.jpeg"
 
+const ChattingBot = ({img, setImg}) => {
+    const steps = [
+        {
+            id: '0', 
+            message : '안녕하세요 회원님💙 Wedding Dive 챗봇입니다.',
+            trigger: '1',
+        },
+        {
+            id: '1',
+            message : '준비가 되셨다면 시작버튼을 눌러 주세요.',
+            trigger: '2',
+            // end:true
+        },
+        {
+            id: '2',
+            options: [
+              { value: 1, label: '시작하기', trigger: '3' }
+            ],
+        },
+        {
+            id: '3',
+            options : [
+                { value: 1, label: '자주 묻는 질문', trigger: '4'},
+                { value: 2, label: '정배 왕자의 하루💕', trigger: '98'},
+            ]
+        },
+        {
+            id: '4',
+            options : [
+                {value: 1, label: '왜 Wedding Dive인가요? 💕', trigger:'5'},
+                {value: 2, label: '예식 사진촬영시 친구는 몇명이 적당한가요? 💕', trigger: '6'},
+                {value: 3, label: '드레스를 잘 고르는 법이 있나요? 💕', trigger: '7'},
+                {value: 4, label: '신혼여행 준비는 언제쯤 하는 게 좋나요? 💕', trigger: '10'},
+                {value: 5, label: '신랑님 체크사항 💕', trigger:'12'},
+                {value: 6, label: '신부님 체크사항 💕', trigger:'17'},
+                {value: 7, label: '차은우 전화번호 💕', trigger:'18'},
+                {value: 8, label: '추가 다른 문의는❔💕', trigger:'19'}
+            ]
+        },
+        {
+            id: '5',
+            message : '결혼하고 싶은 우리 모두의\n소망을 담아 만들었습니다.',
+            trigger:'99'
+        },
+        {
+            id: '6',
+            message : '적게는 18명에서 많게는\n25명까지 줄을 섭니다.',
+            trigger:'99'
+        },
+        {
+            id: '7',
+            message : '기본적으로 드레스를 결정하실 때엔 신부님 체형의 단점은 커버해주고 장점은 부각시켜 주는 드레스를 선택해야 합니다.\n\n 하체에 콤플렉스가 있는 신부님의 경우 허리라인은 살려주고 하체 라인이 돋보이지 않게 가려줄 A라인이나 벨라인 드레스가 어울리며\n\n키가 크고 골반이 있으신 분들은 머메이드 라인이 어울립니다.',
+            trigger: '99',
+        },
+        {
+            id:'10',
+            message : '보통 허니문을 예약하시는 평균적인 시기는 출발 6개월 전이지만 예식 날짜와 예식장 결정이 되시면 바로 준비하셔야 합니다.\n\n 왜냐!! 허니문 비용을 가장 효과적으로 줄일 수 있는 방법이 바로 항공권이기 때문이에요.',
+            trigger: '99',
+        },
+        {
+            id:'12',
+            message:'- 구두 색깔과 같은 목이 긴 양말 착용\n\n- 식장에 디피해 놓을 액자를 받지 못하였다면 예식 당일 반드시 수령\n\n- 웨딩카와 웨딩카에 장식이 되어있는지 체크\n\n- 주례자와 사회자 도착 여부 확인\n\n- 여행가방과 지갑 등을 미리 식구나 친구에게 부탁하여 웨딩카에 넣어 두었는지 확인',
+            trigger:'99',
+        },
+        {
+            id:'17',
+            message:'- 충분한 휴식, 숙면, 신부님을 도와줄 친구 섭외',
+            trigger:'99',
+        },
+        {
+            id:'18',
+            message:'010 - 4063 - 6618입니다.', 
+            trigger:'99',
+        },
+        {
+            id:'19',
+            message:'자세한 1:1 문의는 아래 링크를 클릭하세요!',
+            trigger:'20',
+        },
+        {   
+            id:'20',
+            component : (
+                <a href="/ServiceCenter" style={{color:'white', marginLeft:'5px', fontSize:'17px'}}>1:1 문의하러 가기</a>
+            ),
+            trigger: '99',
+        },
+        
+        {
+            id: '98',
+            message : '기상 - 식사 - 학원 -\n편의점 - 족발 - 식사입니다.',
+            trigger:'jb'
+        },
+        {
+            id: 'jb',
+            component : (
+                <img src={jb} style={{width:"280px", height:"300px"}}/>
+            ),
+            trigger:'99'
+        },
+        {
+            id: '99',
+            options: [
+            { value: 1, label: '처음으로', trigger: '3'},
+            { value: 2, label: '종료하기', trigger: '100'},
+            ]
+        },
+        {
+            id: '100',
+            message : '감사합니다.\n좋은 하루 되세요 :)',
+            end : true
+        },
+    ]
 
+    const theme = {
+        background: '#f5f8fb',
+        fontFamily: 'Helvetica Neue',
+        // headerBgColor: '#EF6C00',
+        headerBgColor : '#F7ECEC',
+        // FontWeight : '200',
+        // headerFontColor: '#fff',
+        headerFontColor : 'black',
+        headerFontSize: '15px',
+        // botBubbleColor: '#EF6C00',
+        botBubbleColor : '#EBF7FF',
+        botFontColor: '#black',
+        userBubbleColor: 'white',
+        userFontColor: 'black',
+    };
+    const st = {
+        position : 'fixed',
+        bottom : "90px", right : "80px",
+        whiteSpace: "pre-line"
+    }
+    const xbtn = {
+        position : 'fixed', 
+        bottom : '568px', 
+        right :'100px', 
+        color :'black',
+        zIndex : '1000',
+        cursor : 'pointer',
+    }
+    return (
+        <>
+        <h3 style={xbtn} onClick={() => setImg(!img)}>✖</h3>
+        <ThemeProvider theme={theme} >
+            <ChatBot steps={steps} 
+            headerTitle="Wedding Dive 채팅봇"
+            placeholder="채팅이 불가능한 채널입니다."
+            botDelay={500} userDelay={500} style={st}
+            // 인풋 검색창 스타일
+            // inputStyle={{position : "fixed", bottom : "0"}}
+            // 봇 아바타 스타일
+            avatarStyle={{width : '46px', background:'#EBF7FF'}} 
+            // avatarStyle={{width : '180px', height:'180px'}} 
+            // 선택 버튼 스타일
+            bubbleOptionStyle={{width : '330px', background : '#F7ECEC', color:'black'}} 
+            contentStyle={{width:"415px"}} 
+            customStyle={{background:"#DB8383", width:"338px", }}
+            />
+        </ThemeProvider>
 
+        </>
+    );    
+}
+export default ChattingBot;
+```
+react-simple-chatbot 라이브러리를 이용해 챗봇을 만들어보았습니다.
