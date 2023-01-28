@@ -1,7 +1,7 @@
 ICIA 최종프로젝트 Wedding Dive
 ---
 프로젝트 기간 : 1달 반<br><br>
-프로젝트 인원 : 6명
+프로젝트 인원 : 6명<br><br>
 사용 프로그램 : visual studio, intellj, Mysql<br><br>
 사용 언어 : Html, CSS, JavaScript, React, Java<br>
 ### 환경 구성<br>
