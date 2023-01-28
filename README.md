@@ -300,7 +300,8 @@ export default ModalBasic;
         return dbMember;
     }
 ```
-회원가입 시 비밀번호가 암호화되어 들어가기 때문에, 프론트에서 받아온 값을 매개변수로 받아 내장함수인 findById로 데이터베이스에 일치하는 회원의 데이터를 가져온 후 비교 해 일치하면 멤버 데이터를 return하고 일치하지 않는다면 null을 return합니다. 그 후 back 세션에도 "member"란 변수에 로그인 한 회원의 데이터를 저장합니다.<br><br>
+회원가입 시 비밀번호가 암호화되어 들어가기 때문에, 프론트에서 받아온 값을 매개변수로 받아 내장함수인 findById로 데이터베이스에 일치하는 회원의 데이터를 가져온 후 비교 해 일치하면 멤버 데이터를 return하고 일치하지 않는다면 null을 return합니다. 그 후 back 세션에도 "member"란 변수에 로그인 한 회원의 데이터를 저장합니다.<br>
+로그인 창 활성화 화면<br><br>
 ![image](https://user-images.githubusercontent.com/117874997/215289298-3d6edfe0-1d41-482c-ae87-c0a95a150ed9.png)
 
 ## ModalId.jsx 컴포넌트
@@ -442,7 +443,8 @@ public String selectId(Member member) {
         }
     }
 ```
-프론트에서 보낸 값으로 findBy~~ 함수를 이용해 데이터베이스에 일치하는 아이디가 있다면 아이디를 return, 없다면 없다는 문자열을 return 합니다.<br><br>
+프론트에서 보낸 값으로 findBy~~ 함수를 이용해 데이터베이스에 일치하는 아이디가 있다면 아이디를 return, 없다면 없다는 문자열을 return 합니다.<br>
+아이디찾기 <br>
 ![image](https://user-images.githubusercontent.com/117874997/215290054-025e4bc1-c952-41eb-aa3f-58decaaed7b7.png)
 
 ## ModalPwd.jsx 컴포넌트
@@ -1032,12 +1034,12 @@ export default ServiceCenterInquiry;
 - #### 글 제목 검색 후 화면<br>
 findBy~~Containing을 이용해 프론트에서 넘겨준 값이 포함되어있는 게시글들만 DESC(내림차순)으로 반환합니다.<br>
 
-- #### 첫 화면
-<br><br>
+#### 첫 화면 
+<br>
 ![image](https://user-images.githubusercontent.com/117874997/215291950-f4a5b511-081f-4eda-bf61-ab81259ec376.png)
 
-- #### 글 제목 검색 후 화면
-<br><br>
+#### 글 제목 검색 후 화면
+<br>
 ![image](https://user-images.githubusercontent.com/117874997/215291978-37bc474b-55c2-4e9f-bcba-6fa26bb15acc.png)
 
 ## ModalPwd.jsx 컴포넌트
