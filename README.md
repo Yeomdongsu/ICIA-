@@ -300,8 +300,8 @@ export default ModalBasic;
         return dbMember;
     }
 ```
-회원가입 시 비밀번호가 암호화되어 들어가기 때문에, 프론트에서 받아온 값을 매개변수로 받아 내장함수인 findById로 데이터베이스에 일치하는 회원의 데이터를 가져온 후 비교 해 일치하면 멤버 데이터를 return하고 일치하지 않는다면 null을 return합니다. 그 후 back 세션에도 "member"란 변수에 로그인 한 회원의 데이터를 저장합니다.<br>
-로그인 창 활성화 화면<br><br>
+회원가입 시 비밀번호가 암호화되어 들어가기 때문에, 프론트에서 받아온 값을 매개변수로 받아 내장함수인 findById로 데이터베이스에 일치하는 회원의 데이터를 가져온 후 비교 해 일치하면 멤버 데이터를 return하고 일치하지 않는다면 null을 return합니다. 그 후 back 세션에도 "member"란 변수에 로그인 한 회원의 데이터를 저장합니다.<br><br>
+- #### 로그인 창 활성화 화면<br><br>
 ![image](https://user-images.githubusercontent.com/117874997/215289298-3d6edfe0-1d41-482c-ae87-c0a95a150ed9.png)
 
 ## ModalId.jsx 컴포넌트
@@ -443,8 +443,8 @@ public String selectId(Member member) {
         }
     }
 ```
-프론트에서 보낸 값으로 findBy~~ 함수를 이용해 데이터베이스에 일치하는 아이디가 있다면 아이디를 return, 없다면 없다는 문자열을 return 합니다.<br>
-아이디찾기 <br>
+프론트에서 보낸 값으로 findBy~~ 함수를 이용해 데이터베이스에 일치하는 아이디가 있다면 아이디를 return, 없다면 없다는 문자열을 return 합니다.<br><br>
+#### 아이디찾기 화면 <br><br>
 ![image](https://user-images.githubusercontent.com/117874997/215290054-025e4bc1-c952-41eb-aa3f-58decaaed7b7.png)
 
 ## ModalPwd.jsx 컴포넌트
@@ -630,7 +630,7 @@ export default ModalPwd;
     }
 ```
 프론트에서 보낸 값으로 findBy~~ 함수를 이용해 데이터베이스에 일치하는 아이디가 있다면 아이디를 return, 없다면 없다는 문자열을 return 합니다.<br><br>
-<br><br>
+#### 비밀번호 재설정 화면_1<br><br>
 ![image](https://user-images.githubusercontent.com/117874997/215290351-a523b48e-4068-4803-b931-a7a0e54866ce.png)
 
 ## ModalPwdReset.jsx 컴포넌트
@@ -803,7 +803,7 @@ export default ModalPwdReset;
     }
 ```
 프론트에서 받아온 값으로 findBy~~ 함수를 이용해 재설정할 비밀번호를 암호화 한 후 save()를 이용해 update를 해줍니다.
-<br><br>
+#### 비밀번호 재설정 화면_2<br><br>
 ![image](https://user-images.githubusercontent.com/117874997/215290676-ea154b87-8e87-4ab2-98a5-03ab5be1d945.png)
 
 ## ServiceCenterInquiry.jsx 컴포넌트
@@ -1042,7 +1042,108 @@ findBy~~Containing을 이용해 프론트에서 넘겨준 값이 포함되어있
 <br>
 ![image](https://user-images.githubusercontent.com/117874997/215291978-37bc474b-55c2-4e9f-bcba-6fa26bb15acc.png)
 
-## ModalPwd.jsx 컴포넌트
+## ServiceCenterWrite.jsx 컴포넌트
+```javascript
+    const nav = useNavigate();
+    const id = sessionStorage.getItem("mid");
+  
+    useEffect(() => {
+        // const mid = sessionStorage.getItem("mid");
+
+        if(id === null){
+            alert("로그인 후 가능한 기능입니다");
+            nav("/");
+            // return;
+        }
+    })
+
+    const [board, setBoard] = useState({
+        btitle : "",
+        bstr : "",
+        bpwd : "",
+        btype : "serviceCenter",
+        // member : {mid : id}
+        bmid : id,
+    })
+  
+    const onch = useCallback(e => {
+        const formObj = {
+          ...board,
+          [e.target.name] : e.target.value,
+        };
+        setBoard(formObj);
+        console.log(formObj);
+    }, [board]);
+  
+    const onWrite = (e) => {
+        e.preventDefault();
+
+        axios
+            .post("/serviceCenterWrite" , board)
+            .then((res) => {
+                console.log(res.data);
+                if(res.data === "성공"){
+                    alert("게시글이 작성되었습니다.");
+                    nav(-1);
+                }
+            })
+            .catch((err) => console.log(err));
+    }
+    return (
+        <>
+        <Header/>
+        <div data-aos="fade-up">
+        <Section style={{width : "55%"}}>
+            <div style={Main}>
+            <span style={{display : "block", textAlign : "center", fontSize : "50px", padding : "0"}}>문의하기</span>
+            <form style={Content} onSubmit={onWrite}>
+                    <input style={Input} onChange={onch} name="btitle" placeholder="제목을 입력하세요." autoFocus required />
+                    <textarea style={Textarea} onChange={onch} name="bstr" onScroll placeholder="게시글을 작성하세요." required/>
+                    <input style={Input} onChange={onch} name="bpwd" placeholder="게시글 비밀번호를 입력하세요." required />
+                <div style={Buttons}>
+                    <Button type="submit" wsize="s-30" style={{width : "150px" , marginRight:"10px", backgroundColor : "#C9A3B6"}}>작성하기</Button>
+                    <Button type="button" wsize="s-10" color="gray" onClick={() => nav(-1)} 
+                        style={{width: "150px", backgroundColor : "#D3D3D3", fontSize : "18px"}}>취소하기</Button>
+                </div>
+            </form>    
+            </div>
+        </Section>
+        </div>
+        <Footer />
+        </>
+    );
+}
+```
+상담문의게시판에서 글쓰기를 누르면 이 컴포넌트로 이동합니다. 문의게시판 특성 상 1:1문의를 원칙으로 해 게시글 비밀번호까지 써야 작성이 가능합니다.
+
+## Back_BoardController
+```java
+    @PostMapping("serviceCenterWrite")
+    public String serviceCenterWrite(@RequestBody Board board){
+        log.info("serviceCenterWrite()");
+        return bServ.serviceCenterWrite(board);
+    }
+```
+## Back_BoardService
+```java
+    @Transactional
+    public String serviceCenterWrite(Board board) {
+        log.info("serviceCenterWrite()");
+        String msg = "";
+
+        try{
+            bRepo.save(board);
+            msg = "성공";
+        }catch (Exception e){
+            e.printStackTrace();
+            msg = "실패";
+        }
+        return msg;
+    }
+```
+작성한 내용을 데이터베이스에 save()함수를 이용해 insert 해줍니다.<br><br>
+#### 글쓰기 화면<br><br>
+![image](https://user-images.githubusercontent.com/117874997/215292380-30bab833-913b-45cc-8107-675322ae2ab0.png)
 
 ※ 웨딩 뉴스 페이지
 - #### 일반회원<br>
