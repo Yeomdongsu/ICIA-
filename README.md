@@ -1729,7 +1729,7 @@ const ChattingBot = ({img, setImg}) => {
         },
         {
             id:'18',
-            message:'010 - 4063 - 6618입니다.', 
+            message:'010 - 1111 - 1111입니다.', 
             trigger:'99',
         },
         {
