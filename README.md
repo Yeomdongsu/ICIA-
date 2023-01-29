@@ -301,6 +301,43 @@ export default ModalBasic;
 - #### 로그인 창 활성화 화면<br><br>
 ![image](https://user-images.githubusercontent.com/117874997/215289298-3d6edfe0-1d41-482c-ae87-c0a95a150ed9.png)
 
+## Header.jsx 컴포넌트 (부분)
+
+※ 로그인 회원(일반, 소셜(네이버,구글), 관리자)에 따라 다른 구성 
+
+```javascript
+{lstate === "" ? (  
+        <FlexBox gap={15} align="center">
+          <UtilText onClick={openModal}>로그인</UtilText>
+          <UtilText onClick={()=>setMymodal(true)} >회원가입 </UtilText>
+        </FlexBox>
+      ) : (manager === "admin" ? (
+        <FlexBox gap={15} align="center">
+          <UtilText>{manager}님</UtilText>
+          <UtilText onClick={managerPage}>관리자 페이지</UtilText>
+          <UtilText onClick={onLogout}>로그아웃</UtilText>
+        </FlexBox>
+      ) : (naverState !== "" ? (
+        <FlexBox gap={15} align="center">
+          <UtilText onClick={() => {alert(`🤗 ${naverState}님 반갑습니다 🤗`)}}><img src={naverLogo} alt="naver" style={{marginTop:"7px", width:"30px"}}/></UtilText>
+          <UtilText onClick={Mypage}>{naverState}님</UtilText>
+          <UtilText onClick={onLogout2}>로그아웃</UtilText>
+        </FlexBox>
+      ) : (googleState !== "" ? (
+        <FlexBox gap={15} align="center">
+          <UtilText onClick={() => {alert(`🤗 ${googleState}님 반갑습니다 🤗`)}}><img src={googleLogo} alt="google" style={{marginTop:"9px", width:"40px", marginRight:"-5px"}}/></UtilText>
+          <UtilText onClick={Mypage}>{googleState}님</UtilText>
+          <UtilText onClick={onLogout2}>로그아웃</UtilText>
+        </FlexBox>
+      ) : (
+        <FlexBox gap={15} align="center">
+          <UtilText>{lstate}님</UtilText>
+          <UtilText onClick={Mypage}>마이페이지</UtilText>
+          <UtilText onClick={onLogout}>로그아웃</UtilText>
+        </FlexBox>
+      ))))}
+```
+
 - #### 일반회원 로그인 후 화면<br><br>
 ![image](https://user-images.githubusercontent.com/117874997/215312868-a38a23d0-ee6e-415a-93f6-b8537388dd5f.png)
 
