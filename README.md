@@ -1829,6 +1829,9 @@ react-simple-chatbot 라이브러리를 이용해 자주 묻는 질문은 챗봇
 #### 챗봇_3<br><br>
 ![image](https://user-images.githubusercontent.com/117874997/215295169-277858a8-70ee-46d1-ab66-3d6bf59d78ec.png)
 
+#### erd<br><br>
+![image](https://user-images.githubusercontent.com/117874997/215296621-de57e2fe-60a8-4aab-98e9-eb945509b133.png)
+
 마치며
 ---
 #### 소감<br><br>
