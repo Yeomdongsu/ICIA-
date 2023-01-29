@@ -16,6 +16,9 @@ View 템플릿 : React<br>
 - #### 메인페이지 화면<br><br>
 ![image](https://user-images.githubusercontent.com/117874997/215312693-84f6a19e-68c2-48b6-9819-7d17f8b525db.png)
 
+- #### ERD 구성<br><br>
+![image](https://user-images.githubusercontent.com/117874997/215296621-de57e2fe-60a8-4aab-98e9-eb945509b133.png)
+
 ## 제가 구현한 기능으로는<br>
 - 로그인(일반회원, 소셜로그인(네이버, 구글))<br>
 - 아이디 찾기, 비밀번호 찾기(재설정)<br>
@@ -1802,9 +1805,6 @@ react-simple-chatbot 라이브러리를 이용해 자주 묻는 질문은 챗봇
 
 #### 챗봇_3<br><br>
 ![image](https://user-images.githubusercontent.com/117874997/215295169-277858a8-70ee-46d1-ab66-3d6bf59d78ec.png)
-
-#### erd<br><br>
-![image](https://user-images.githubusercontent.com/117874997/215296621-de57e2fe-60a8-4aab-98e9-eb945509b133.png)
 
 마치며
 ---
