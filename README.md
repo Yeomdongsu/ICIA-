@@ -12,6 +12,10 @@ DB 접근 기술 : JPA<br><br>
 View 템플릿 : React<br>
 ## 프로젝트 설명<br>
 결혼하는 과정에 필요한 스드메, 신혼여행, 예식장 등 필요한걸 하나에 모아놓은 웨딩 중개 사이트입니다.<br> 
+
+- #### 메인페이지 화면<br><br>
+![image](https://user-images.githubusercontent.com/117874997/215312693-84f6a19e-68c2-48b6-9819-7d17f8b525db.png)
+
 ## 제가 구현한 기능으로는<br>
 - 로그인(일반회원, 소셜로그인(네이버, 구글))<br>
 - 아이디 찾기, 비밀번호 찾기(재설정)<br>
@@ -20,7 +24,7 @@ View 템플릿 : React<br>
 - 채팅봇 기능(라이브러리)<br>
 ## ModalBasic.jsx 컴포넌트
 
-※ 로그인(일반회원, 소셜로그인(네이버,구글)
+※ 로그인(일반회원, 소셜로그인(네이버,구글))
 
 ```javascript
 
@@ -296,6 +300,15 @@ export default ModalBasic;
 회원가입 시 비밀번호가 암호화되어 들어가기 때문에, 프론트에서 받아온 값을 매개변수로 받아 내장함수인 findById로 데이터베이스에 일치하는 회원의 데이터를 가져온 후 비교 해 일치하면 멤버 데이터를 return하고 일치하지 않는다면 null을 return합니다. 그 후 back 세션에도 "member"란 변수에 로그인 한 회원의 데이터를 저장합니다.<br><br>
 - #### 로그인 창 활성화 화면<br><br>
 ![image](https://user-images.githubusercontent.com/117874997/215289298-3d6edfe0-1d41-482c-ae87-c0a95a150ed9.png)
+
+- #### 일반회원 로그인 후 화면<br><br>
+![image](https://user-images.githubusercontent.com/117874997/215312868-a38a23d0-ee6e-415a-93f6-b8537388dd5f.png)
+
+- #### 네이버 로그인 후 화면<br><br>
+![image](https://user-images.githubusercontent.com/117874997/215312945-5cc50583-9ff1-4de1-8ec9-a7351212f39f.png)
+
+- #### 구글 로그인 후 화면<br><br>
+![image](https://user-images.githubusercontent.com/117874997/215312918-93be6fff-b1b2-44e2-a83d-9591549cf2e6.png)
 
 ## ModalId.jsx 컴포넌트
 
