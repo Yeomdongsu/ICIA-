@@ -1,6 +1,6 @@
 ICIA 최종프로젝트 Wedding Dive
 ---
-프로젝트 기간 : 1달 반<br><br>
+프로젝트 기간 : 2022.12 ~ 2023.01 <br><br>
 프로젝트 인원 : 6명<br><br>
 사용 프로그램 : visual studio, intellj, Mysql<br><br>
 사용 언어 : Html, CSS, JavaScript, React, Java<br>
@@ -11,31 +11,18 @@ IDE(통합개발환경) : IntelliJ Ultimate(유료 버전), Visual Studio Code<b
 DB 접근 기술 : JPA<br><br>
 View 템플릿 : React<br>
 ## 프로젝트 설명<br>
-결혼하는 과정에 필요한 스드메, 신혼여행, 예식장 등 필요한걸 하나에 모아논 웨딩 중개 사이트입니다.<br> 
+결혼하는 과정에 필요한 스드메, 신혼여행, 예식장 등 필요한걸 하나에 모아놓은 웨딩 중개 사이트입니다.<br> 
 ## 제가 구현한 기능으로는<br>
-- 로그인(일반회원, 소셜로그인(네이버, 구글)<br>
-- 아이디찾기, 비밀번호 찾기(재설정)<br>
-- 상담문의 게시판(게시글 출력, 페이징 처리, 검색기능, 글쓰기, session을 이용해 회원과 관리자의 기능 구분[게시글 비밀번호, 글삭제, 댓글기능, 댓글삭제])<br>
-- 뉴스 게시판(뉴스 출력, session을 이용해 회원과 관리자의 기능 구분[뉴스쓰기, 뉴스삭제]<br>
+- 로그인(일반회원, 소셜로그인(네이버, 구글))<br>
+- 아이디 찾기, 비밀번호 찾기(재설정)<br>
+- 상담문의 게시판(게시글 출력, 페이징 처리, 검색기능, 글쓰기, session을 이용해 회원과 관리자의 기능 구분(게시글 비밀번호, 글삭제, 댓글기능, 댓글삭제))<br>
+- 뉴스 게시판(뉴스 출력, session을 이용해 회원과 관리자의 기능 구분(뉴스쓰기, 뉴스삭제))<br>
 - 채팅봇 기능(라이브러리)<br>
 ## ModalBasic.jsx 컴포넌트
 
 ※ 로그인(일반회원, 소셜로그인(네이버,구글)
 
 ```javascript
-import React, { useCallback, useEffect, useId, useRef, useState } from "react";
-import "./ModalBasic.scss";
-import logo from "./image/logo.png";
-import naver from "./image/naverplus.png";
-import kakao from "./image/kakao.jpg";
-import google from "./image/Google.png";
-import facebook from "./image/facebook.png";
-import ModalId from "./ModalId.jsx";
-import JoinModal from "./JoinModal.jsx";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { gapi } from "gapi-script";
-import GoogleLogin from "react-google-login";
 
 function ModalBasic({ setModalOpen, sucLogin, sucLoginNaver, sucLoginGoogle }) {
     // 모달 외부 클릭시 끄기 처리
@@ -314,11 +301,6 @@ export default ModalBasic;
 
 ※ 아이디 찾기
 ```javascript
-import axios from "axios";
-import React, { useCallback, useEffect, useRef, useState } from "react"
-import logo from "./image/logo.png"
-import "./ModalId.scss";
-import ModalPwd from "./ModalPwd.jsx";
 
 const ModalId = ({ setSelectId, setModalOpen }) => {
     const [pwd, setPwd] = useState(false);
@@ -457,11 +439,6 @@ public String selectId(Member member) {
 
 ※ 비밀번호 재설정_1
 ```javascript
-import axios from "axios";
-import React, { useCallback, useEffect, useRef, useState } from "react"
-import logo from "./image/logo.png"
-import "./ModalPwd.scss";
-import ModalPwdReset from "./ModalPwdReset.jsx";
 
 const ModalPwd = ({ setSelectId, setPwd, setCheckValue, setModalOpen }) => {
     const modalRef = useRef(null);
@@ -643,10 +620,6 @@ export default ModalPwd;
 
 ※ 비밀번호 재설정_2
 ```javascript
-import axios from "axios";
-import React, { useCallback, useEffect, useRef, useState } from "react"
-import logo from "./image/logo.png"
-import "./ModalPwdReset.scss";
 
 const ModalPwdReset = ({ setSelectId, setReset, findid, setModalOpen }) => {
     const modalRef = useRef(null);
@@ -816,17 +789,6 @@ export default ModalPwdReset;
 
 ※ 상담문의 페이지 (첫화면, 검색 후 화면)
 ```javascript
-import React, { useCallback, useEffect, useState } from "react";
-import Section from "../main/Section";
-import Button from "../form/Button";
-import moment from "moment/moment";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import Stable from "./Stable";
-import StableColumn from "./StableColumn";
-import StableRow from "./StableRow";
-import Paging from "./Spaging";
-import { el } from "date-fns/locale";
 
 const df = (date) => moment(date).format("YYYY-MM-DD HH:mm");
 
@@ -1135,16 +1097,6 @@ findBy~~Containing을 이용해 프론트에서 넘겨준 값이 포함되어있
 ※ 게시글 상세보기 ( 게시글 삭제(관리자만), 게시글 댓글 작성(관리자만), 게시글 댓글 삭제(관리자만) )
 
 ```javascript
-import EstimateBanner from "../estimate/EstimateBanner";
-import Footer from "../footer/Footer";
-import Button from "../form/Button";
-import Header from "../header/Header";
-import Section from "../main/Section";
-import moment from "moment/moment";
-import { useNavigate } from "react-router-dom";
-import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
-import "./ServiceCenterDetail.scss";
 
 const df = (date) => moment(date).format("YYYY-MM-DD HH:mm");
 const df2 = (date) => moment(date).format("YYYY-MM-DD");
@@ -1475,17 +1427,6 @@ export default ServiceCenterDetail;
 
 ※ 웨딩 뉴스 ( 글쓰기와 상세보기는 위의 상담게시판과 많이 겹쳐 코드를 제외했습니다 )
 ```javascript
-import React, { useCallback, useEffect, useState } from "react";
-import Section from "../main/Section";
-import Button from "../form/Button";
-import moment from "moment/moment";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import StableRow from "../servicecenter/StableRow";
-import StableColumn from "../servicecenter/StableColumn";
-import Paging from "../servicecenter/Spaging";
-import { fi } from "date-fns/locale";
-// import Paging from "./Spaging";
 
 const df = (date) => moment(date).format("YYYY-MM-DD HH:mm");
 
@@ -1654,10 +1595,6 @@ export default WedNews;
 
 ※ 챗봇 라이브러리 
 ```javascript
-import React from "react";
-import { ThemeProvider } from "styled-components";
-import ChatBot from "react-simple-chatbot";
-import jb from "./jb.jpeg"
 
 const ChattingBot = ({img, setImg}) => {
     const steps = [
@@ -1780,19 +1717,7 @@ const ChattingBot = ({img, setImg}) => {
         userBubbleColor: 'white',
         userFontColor: 'black',
     };
-    const st = {
-        position : 'fixed',
-        bottom : "90px", right : "80px",
-        whiteSpace: "pre-line"
-    }
-    const xbtn = {
-        position : 'fixed', 
-        bottom : '568px', 
-        right :'100px', 
-        color :'black',
-        zIndex : '1000',
-        cursor : 'pointer',
-    }
+    
     return (
         <>
         <h3 style={xbtn} onClick={() => setImg(!img)}>✖</h3>
@@ -1812,7 +1737,6 @@ const ChattingBot = ({img, setImg}) => {
             customStyle={{background:"#DB8383", width:"338px", }}
             />
         </ThemeProvider>
-
         </>
     );    
 }
