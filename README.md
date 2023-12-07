@@ -63,16 +63,16 @@ View 템플릿 : React<br>
 #### 관리자가 회원 글 확인할 때<br><br>
 ![image](https://user-images.githubusercontent.com/117874997/215292887-60fa539a-a17b-4a2b-a565-99c30033d526.png)
 
-#### 뉴스 전체출력 화면<br><br>
+#### 뉴스게시판 화면<br><br>
 ![image](https://user-images.githubusercontent.com/117874997/215294422-d28516c6-9b0a-4463-907f-43b5bda73d82.png)
 
-#### 뉴스 작성화면 (상담게시판과 겹치는 부분이 많아 이미지만 첨부합니다.)<br><br>
+#### 뉴스 작성화면<br><br>
 ![image](https://user-images.githubusercontent.com/117874997/215294135-269530f1-ad47-4c9e-bc89-856738f66daf.png)
 
-#### 뉴스 상세보기 화면_1(상담게시판과 겹치는 부분이 많아 이미지만 첨부합니다.)<br><br>
+#### 뉴스 상세보기 화면_1<br><br>
 ![image](https://user-images.githubusercontent.com/117874997/215294274-09444e9d-3881-4b0b-ab0f-5b435ebc5bdb.png)
 
-#### 뉴스 상세보기 화면_2(상담게시판과 겹치는 부분이 많아 이미지만 첨부합니다.)<br><br>
+#### 뉴스 상세보기 화면_2<br><br>
 ![image](https://user-images.githubusercontent.com/117874997/215294304-21a03e7f-78be-42c0-b50a-42bbfbecb028.png)
 
 #### 챗봇_1<br><br>
